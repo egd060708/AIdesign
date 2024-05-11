@@ -29,7 +29,7 @@ export all_proxy=''
 python AIreminder_test.py
 ```
 
-![](/home/lu/Git_Project/github/AIdesign/cache/2024-05-11_12-27.png)
+![shell_view](README.assets/shell_view.png)
 
 成功运行过后复制输出的网络端口在浏览器打开
 
@@ -37,5 +37,4 @@ python AIreminder_test.py
 
 输入要生成备忘录的语句，点击submit即可输出相应备忘录
 
-![](/home/lu/Git_Project/github/AIdesign/cache/2024-05-11_12-26.png)
-
+![ui_view](README.assets/ui_view.png)
