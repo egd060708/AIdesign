@@ -2,7 +2,7 @@
 Author: lu 2231625449@qq.com
 Date: 2024-05-11 11:18:37
 LastEditors: lu 2231625449@qq.com
-LastEditTime: 2024-05-11 13:24:30
+LastEditTime: 2024-05-13 11:01:07
 FilePath: /AIdesign/AIreminder_test.py
 Description: 
 
@@ -26,7 +26,8 @@ def AIreminder(input_text):
         ("system", "你是一个智能备忘录。需要解析输入句子中的任务和对应的时间，返回一个结构化的数据格式，其中包含任务描述和确切时间。"),
         ("user", "{input_template}"),
         ("ai", "{output_template}"),
-        ("system", "现在的时间是 {now_time}，你需要根据上述内容和模版，根据现在的时间输出备忘录。无论输入语句有多短都要输出有效内容"),
+        ("system", "你需要根据上述内容和模版，根据现在的时间输出备忘录。无论输入语句有多短都要输出有效内容。现在的时间是 {now_time}。"),
+        ("system", "记得备忘录每一项都要另起一行！"),
         ("user","{input}")
     ])
     # print(prompt.format(input="再过半小时我要去补办学生卡，然后明天下午我要去找 A 老师，星期三上午还要去看医生",output="[{‘补办学生卡’, (2024, 3, 4, 10, 32)}],{‘ 去 找 A 老 师 ’, (2024, 3, 5, 15, 0)},{‘去体检’, (2024, 3, 6, 8, 0)}]",now_time=datetime.datetime.now()))
@@ -36,18 +37,19 @@ def AIreminder(input_text):
     chain = prompt | llm | output_parser
     time = str(datetime.datetime.now())
     input_template = "再过半小时我要去补办学生卡，然后明天下午我要去找 A 老师，星期三上午还要去体检"
-    output_template = "[{‘补办学生卡’, (2024, 3, 4, 10, 32)}],{‘ 去 找 A 老 师 ’, (2024, 3, 5, 15, 0)},{‘去体检’, (2024, 3, 6, 8, 0)}]"
+    output_template = "[{‘补办学生卡’, (2024, 3, 4, 10, 32)},\n {‘ 去 找 A 老 师 ’, (2024, 3, 5, 15, 0)},\n {‘去体检’, (2024, 3, 6, 8, 0)}]"
     input = input_text
     output = chain.invoke({"input_template": input_template,"now_time":time,"output_template":output_template,"input":input})
     return output
 
-demo = gr.Interface(
-    fn=AIreminder,
-    inputs=["text"],
-    outputs=["text"],
-)
+def main():
+    demo = gr.Interface(
+        fn=AIreminder,
+        inputs=["text"],
+        outputs=["text"],
+    )
 
-demo.launch()
+    demo.launch()
 
 # print(AIreminder("今天下午去五山，明天中午吃酸菜鱼，明天晚上开全员大会"))
 
