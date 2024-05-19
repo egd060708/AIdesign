@@ -12,13 +12,23 @@ import AIreminder_test as re
 
 import tkinter as tk
 
+extracted_text = ""
+
 def submit_schedule():
     # 获取输入文本
+    global extracted_text
     input_text = input_textbox.get("1.0", tk.END)
     # 这里可以加入处理输入文本并生成备忘录内容的逻辑
     output_text = re.AIreminder(input_text)  # 假设输出文本暂时与输入文本相同
     output_textbox.delete("1.0", tk.END)  # 清空输出文本框
     output_textbox.insert(tk.END, output_text)  # 显示处理后的备忘录内容
+    # 获取处理后的输出文本并执行额外的逻辑
+    extracted_text = output_textbox.get("1.0", tk.END).strip()
+    print("提取的备忘录内容:\n", extracted_text)
+    
+    with open('output.md', 'w', encoding='utf-8') as file:
+        file.write(extracted_text)
+    
 
 # 创建主窗口
 root = tk.Tk()
